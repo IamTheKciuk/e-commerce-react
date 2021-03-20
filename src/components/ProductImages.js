@@ -1,53 +1,76 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
+import React, { useState } from "react";
+import styled from "styled-components";
 
-const ProductImages = () => {
-  return <h4>product images</h4>
-}
+const ProductImages = ({ images = [{ url: "" }] }) => {
+    const [mainImage, setMainImage] = useState(images[0]);
+
+    return (
+        <Wrapper>
+            <img src={mainImage.url} alt="main image" />
+            <div className="gallery">
+                {images.map((image, index) => {
+                    return (
+                        <img
+                            key={index}
+                            className={`${
+                                image.url === mainImage.url ? "active" : null
+                            }`}
+                            src={image.url}
+                            alt={image.filename}
+                            onClick={() => {
+                                setMainImage(images[index]);
+                            }}
+                        />
+                    );
+                })}
+            </div>
+        </Wrapper>
+    );
+};
 
 const Wrapper = styled.section`
-  .main {
-    height: 600px;
-  }
-  img {
-    width: 100%;
-    display: block;
-    border-radius: var(--radius);
-    object-fit: cover;
-  }
-  .gallery {
-    margin-top: 1rem;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    column-gap: 1rem;
+    .main {
+        height: 600px;
+    }
     img {
-      height: 100px;
-      cursor: pointer;
-    }
-  }
-  .active {
-    border: 2px solid var(--clr-primary-5);
-  }
-  @media (max-width: 576px) {
-    .main {
-      height: 300px;
+        width: 100%;
+        display: block;
+        border-radius: var(--radius);
+        object-fit: cover;
     }
     .gallery {
-      img {
-        height: 50px;
-      }
+        margin-top: 1rem;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        column-gap: 1rem;
+        img {
+            height: 100px;
+            cursor: pointer;
+        }
     }
-  }
-  @media (min-width: 992px) {
-    .main {
-      height: 500px;
+    .active {
+        border: 2px solid var(--clr-primary-5);
     }
-    .gallery {
-      img {
-        height: 75px;
-      }
+    @media (max-width: 576px) {
+        .main {
+            height: 300px;
+        }
+        .gallery {
+            img {
+                height: 50px;
+            }
+        }
     }
-  }
-`
+    @media (min-width: 992px) {
+        .main {
+            height: 500px;
+        }
+        .gallery {
+            img {
+                height: 75px;
+            }
+        }
+    }
+`;
 
-export default ProductImages
+export default ProductImages;
