@@ -12,10 +12,22 @@ import {
 const filter_reducer = (state, action) => {
     switch (action.type) {
         case LOAD_PRODUCTS:
+            let maxPrice = action.payload.map((item) => {
+                return item.price;
+            });
+
+            maxPrice = Math.max(...maxPrice);
+
             return {
                 ...state,
                 all_products: [...action.payload], // copying the values to be sure not to reference to same place in memory with all_products and filtered_products
+
                 filtered_products: [...action.payload],
+                filters: {
+                    ...state.filters,
+                    max_price: maxPrice,
+                    price: maxPrice,
+                },
             };
 
         case SET_GRIDVIEW:
@@ -56,6 +68,74 @@ const filter_reducer = (state, action) => {
             }
 
             return { ...state, filtered_products: tempProducts };
+
+        case UPDATE_FILTERS:
+            const { name, value } = action.payload;
+            return { ...state, filters: { ...state.filters, [name]: value } };
+
+        case FILTER_PRODUCTS:
+            const { all_products } = state;
+            const {
+                text,
+                category,
+                company,
+                color,
+                price,
+                shipping,
+            } = state.filters;
+
+            let temp_products = [...all_products];
+
+            if (text) {
+                temp_products = temp_products.filter((product) => {
+                    if (product.name.toLowerCase().indexOf(text) != -1)
+                        return product;
+                });
+            }
+
+            if (category !== "all") {
+                temp_products = temp_products.filter((product) => {
+                    return product.category.toLowerCase() === category;
+                });
+            }
+
+            if (company !== "all") {
+                temp_products = temp_products.filter((product) => {
+                    return product.company.toLowerCase() === company;
+                });
+            }
+
+            if (color !== "all") {
+                temp_products = temp_products.filter((product) => {
+                    return product.colors.find((c) => c === color);
+                });
+            }
+
+            temp_products = temp_products.filter((product) => {
+                return product.price <= price;
+            });
+
+            if (shipping) {
+                temp_products = temp_products.filter((product) => {
+                    return product.shipping === true;
+                });
+            }
+
+            return { ...state, filtered_products: temp_products };
+
+        case CLEAR_FILTERS:
+            return {
+                ...state,
+                filters: {
+                    ...state.filters,
+                    text: "",
+                    company: "all",
+                    category: "all",
+                    color: "all",
+                    price: state.filters.max_price,
+                    shipping: false,
+                },
+            };
 
         default:
             throw new Error(`No Matching "${action.type}" - action type`);
