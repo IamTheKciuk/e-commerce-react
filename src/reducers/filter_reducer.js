@@ -88,8 +88,10 @@ const filter_reducer = (state, action) => {
 
             if (text) {
                 temp_products = temp_products.filter((product) => {
-                    if (product.name.toLowerCase().indexOf(text) != -1)
+                    if (product.name.toLowerCase().indexOf(text) !== -1)
                         return product;
+
+                    return null;
                 });
             }
 
