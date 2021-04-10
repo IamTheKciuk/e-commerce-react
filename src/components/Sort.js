@@ -2,7 +2,6 @@ import React from "react";
 import { useFilterContext } from "../context/filter_context";
 import { BsFillGridFill, BsList } from "react-icons/bs";
 import styled from "styled-components";
-import { products_url } from "../utils/constants";
 
 const Sort = () => {
     const {

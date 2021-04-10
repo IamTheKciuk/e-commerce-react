@@ -8,11 +8,12 @@ import { CartProvider } from "./context/cart_context";
 import { UserProvider } from "./context/user_context";
 import { Auth0Provider } from "@auth0/auth0-react";
 
+const auth0domain = process.env.REACT_APP_AUTH_DOMAIN;
 const auth0id = process.env.REACT_APP_AUTH0_CLIENT_ID;
 
 ReactDOM.render(
     <Auth0Provider
-        domain="mrkwit.eu.auth0.com"
+        domain={auth0domain}
         clientId={auth0id}
         redirectUri={window.location.origin}
     >

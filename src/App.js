@@ -10,40 +10,43 @@ import {
     About,
     Products,
     Private,
+    AuthWrapper,
 } from "./pages";
 
 function App() {
     return (
-        <Router>
-            <Navbar></Navbar>
-            <Sidebar></Sidebar>
-            <Switch>
-                <Route exact path="/">
-                    <Home></Home>
-                </Route>
-                <Route exact path="/about">
-                    <About></About>
-                </Route>
-                <Route exact path="/cart">
-                    <Cart></Cart>
-                </Route>
-                <Route exact path="/products">
-                    <Products></Products>
-                </Route>
-                <Route
-                    exact
-                    path="/products/:id"
-                    children={<SingleProduct />}
-                ></Route>
-                <Private exact path="/checkout">
-                    <Checkout></Checkout>
-                </Private>
-                <Route to="*">
-                    <Error></Error>
-                </Route>
-            </Switch>
-            <Footer></Footer>
-        </Router>
+        <AuthWrapper>
+            <Router>
+                <Navbar></Navbar>
+                <Sidebar></Sidebar>
+                <Switch>
+                    <Route exact path="/">
+                        <Home></Home>
+                    </Route>
+                    <Route exact path="/about">
+                        <About></About>
+                    </Route>
+                    <Route exact path="/cart">
+                        <Cart></Cart>
+                    </Route>
+                    <Route exact path="/products">
+                        <Products></Products>
+                    </Route>
+                    <Route
+                        exact
+                        path="/products/:id"
+                        children={<SingleProduct />}
+                    ></Route>
+                    <Private exact path="/checkout">
+                        <Checkout></Checkout>
+                    </Private>
+                    <Route to="*">
+                        <Error></Error>
+                    </Route>
+                </Switch>
+                <Footer></Footer>
+            </Router>
+        </AuthWrapper>
     );
 }
 
